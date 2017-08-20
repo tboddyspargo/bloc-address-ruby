@@ -34,4 +34,24 @@ require_relative '../models/address_book'
        expect(new_entry.email).to eq('augusta.king@lovelace.com')
      end
    end
+
+   describe "#remove_entry" do
+     before :all do
+       @book = AddressBook.new
+       @book.add_entry('Ada Lovelace', '010.012.1815', 'augusta.king@lovelace.com')
+       @book.add_entry('Theresa Lovelace', '010.012.1816', 'theresa.queen@lovelace.com')
+     end
+
+     it "removes only one entry from the address book" do
+       @book.remove_entry 'Theresa Lovelace', '010.012.1816', 'theresa.queen@lovelace.com'
+       expect(@book.entries.size).to eq(1)
+     end
+
+     it "removes the correct entry from the address book" do
+       @book.add_entry('Mark Lovelace', '010.012.1817', 'mark.prince@lovelace.com')
+       mark = @book.entries.select { |item| item.name === "Mark lovelace"}
+       @book.remove_entry('Mark Lovelace', '010.012.1817', 'mark.prince@lovelace.com')
+       expect(@book.entries).not_to include(mark)
+     end
+   end
  end
